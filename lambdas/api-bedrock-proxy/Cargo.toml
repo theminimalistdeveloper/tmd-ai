@@ -1,0 +1,32 @@
+[package]
+name = "api-bedrock-proxy"
+version = "0.1.0"
+rust-version.workspace = true
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+aws-config = { workspace = true }
+lambda_http = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+http = { workspace = true }
+openssl = { workspace = true }
+url = { workspace = true }
+aws-sdk-bedrockruntime.workspace = true
+futures-util = "0.3.32"
+tokio-stream = "0.1.18"
+future-utils = "0.12.1"
+bytes = "1.11.1"
+lambda_runtime = "1.2.0"
+hyper = { version = "1.9.0", features = ["full"] }
+http-body-util = "0.1.3"
+async-stream = "0.3.6"
+aws_lambda_events = "1.2.0"
+
+[lints]
+workspace = true
+

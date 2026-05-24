@@ -1,0 +1,26 @@
+[workspace]
+members = [
+  "lambdas/*"
+]
+resolver = "2"
+
+[workspace.package]
+rust-version = "1.95"
+edition = "2024"
+authors = ["Rafael Dias <theminimalistdeveloper@gmail.com>"]
+repository = "git@github.com/theminimalistdeveloper/tmd-ai.git"
+
+[workspace.dependencies]
+aws-config = "1.8.17"
+aws-sdk-bedrockruntime = "1.131.0"
+http = "1.4.0"
+lambda_http = "1.2.0"
+openssl = { version = "0.10.80", features = ["vendored"] }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.150"
+tokio = { version = "1.52.3", features = ["full"] }
+tracing = "0.1.44"
+url = "2.5.8"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"

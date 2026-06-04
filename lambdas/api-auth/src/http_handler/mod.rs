@@ -22,7 +22,7 @@ fn generate_auth_response(
         .version("2012-10-17".to_string())
         .statement(vec![
             IamPolicyStatement::builder()
-            .action(vec!["invoke".to_string()])
+            .action(vec!["execute-api:Invoke".to_string()])
             .effect(effect)
             .resource(vec![resource])
             .build()
@@ -36,6 +36,8 @@ pub(crate) async fn function_handler(
     event: ApiGatewayCustomAuthorizerRequest,
     ddb: &Client
 ) -> Result<ApiGatewayCustomAuthorizerResponse, Error> {
+    tracing::info!("Event {:?}", event);
+
     let authorization_token = event.authorization_token.unwrap_or_default();
     let method_arn = event.method_arn.unwrap_or_default();
     let table_name = std::env::var("TABLE_NAME").expect("TABLE_NAME not set");
@@ -48,7 +50,7 @@ pub(crate) async fn function_handler(
     }
 
     let mut token_key = HashMap::new();
-    token_key.insert("token".to_string(), AttributeValue::S(authorization_token));
+    token_key.insert("token_hash".to_string(), AttributeValue::S(authorization_token));
 
     let result = ddb
         .get_item()
@@ -58,24 +60,28 @@ pub(crate) async fn function_handler(
         .await?;
 
     if let Some(item) = result.item {
+        tracing::info!("Found item: {:?}", item);
         if let Some(AttributeValue::S(username)) = item.get("username") {
+            tracing::info!("Username {}", username.clone().to_string());
             return Ok(generate_auth_response(
-                    username.to_string(), 
-                    IamPolicyEffect::Allow, 
+                    username.to_string(),
+                    IamPolicyEffect::Allow,
                     method_arn.to_string()
             ));
         } else {
+            tracing::info!("Could not find the username");
             return Ok(generate_auth_response(
-                    "unknown".to_string(), 
-                    IamPolicyEffect::Deny, 
+                    "unknown".to_string(),
+                    IamPolicyEffect::Deny,
                     method_arn.to_string()
             ));
         };
     }
 
+    tracing::info!("Default deny");
     Ok(generate_auth_response(
-            "unknown".to_string(), 
-            IamPolicyEffect::Deny, 
+            "unknown".to_string(),
+            IamPolicyEffect::Deny,
             "resource".to_string()
     ))
 }

@@ -1,0 +1,23 @@
+[package]
+name = "api-get-models"
+version = "0.1.0"
+rust-version.workspace = true
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+aws-config = { workspace = true }
+lambda_http = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+http = { workspace = true }
+openssl = { workspace = true }
+aws-sdk-bedrockruntime.workspace = true
+aws-sdk-bedrock = "1.144.0"
+
+[lints]
+workspace = true
+

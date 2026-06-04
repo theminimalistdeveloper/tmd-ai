@@ -1,7 +1,9 @@
 mod http_handler;
 use aws_sdk_dynamodb::Client;
 use http_handler::function_handler;
-use lambda_http::{Error, run, service_fn, tracing};
+use lambda_http::tracing;
+use lambda_runtime::{service_fn, Error, LambdaEvent};
+use aws_lambda_events::apigw::ApiGatewayCustomAuthorizerRequest;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
@@ -10,6 +12,7 @@ async fn main() -> Result<(), Error> {
     let config = aws_config::load_defaults(aws_config::BehaviorVersion::latest()).await;
     let client = Client::new(&config);
 
-    run(service_fn(|event| function_handler(event, &client))).await?;
+    lambda_runtime::run(service_fn(|event: LambdaEvent<ApiGatewayCustomAuthorizerRequest>| 
+            function_handler(event.payload, &client))).await?;
     Ok(())
 }

@@ -1,8 +1,7 @@
 mod http_handler;
+use aws_sdk_bedrockruntime::Client as BedrockClient;
 use http_handler::function_handler;
 use lambda_http::{Error, service_fn, tracing};
-use aws_sdk_bedrockruntime::Client as BedrockClient;
-
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {

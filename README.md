@@ -356,21 +356,9 @@ Configure the TMD AI proxy as a provider in your `opencode.json` (project-level)
         "apiKey": "sk-your-token"
       },
       "models": {
-        "eu.anthropic.claude-3-5-sonnet-20240620-v1:0": {
-          "name": "Claude 3.5 Sonnet"
+        "deepkseek.v3.2": {
+          "name": "Deepseek v3.2"
         },
-        "eu.anthropic.claude-3-5-haiku-20241022": {
-          "name": "Claude 3.5 Haiku"
-        },
-        "eu.anthropic.claude-opus-4-7": {
-          "name": "Claude Opus 4.7"
-        },
-        "eu.amazon.nova-pro-v1:0": {
-          "name": "Amazon Nova Pro"
-        },
-        "eu.amazon.nova-lite-v1:0": {
-          "name": "Amazon Nova Lite"
-        }
       }
     }
   }

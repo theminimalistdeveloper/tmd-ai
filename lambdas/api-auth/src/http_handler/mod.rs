@@ -38,7 +38,7 @@ pub(crate) async fn function_handler(
 ) -> Result<ApiGatewayCustomAuthorizerResponse, Error> {
     tracing::info!("Event {:?}", event);
 
-    let authorization_token = event.authorization_token.unwrap_or_default();
+    let mut authorization_token = event.authorization_token.unwrap_or_default();
     let method_arn = event.method_arn.unwrap_or_default();
     let table_name = std::env::var("TABLE_NAME").expect("TABLE_NAME not set");
 
@@ -47,6 +47,12 @@ pub(crate) async fn function_handler(
                 "unknown".to_string(),
                 IamPolicyEffect::Deny,
                 method_arn.to_string()))
+    }
+
+    if authorization_token.starts_with("Bearer ") {
+        authorization_token = authorization_token
+            .trim_start_matches("Bearer ").to_string();
+            
     }
 
     let mut token_key = HashMap::new();

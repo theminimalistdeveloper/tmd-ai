@@ -1,5 +1,6 @@
 use lambda_http::{http, Body, Error, Response, Request, http::HeaderValue};
 use aws_sdk_bedrock::Client as BedrockClient;
+use aws_sdk_bedrock::types::InferenceType;
 use serde_json::{json, Value};
 
 pub(crate) async fn function_handler(
@@ -10,6 +11,7 @@ pub(crate) async fn function_handler(
 
     let models = bedrock_client
         .list_foundation_models()
+        .by_inference_type(InferenceType::OnDemand)
         .send()
         .await?
         .model_summaries
@@ -37,7 +39,7 @@ pub(crate) async fn function_handler(
                     "allow_fine_tuning": false,
                     "organization": "*",
                     "group": Value::Null,
-                    "is_blocking": false
+                    "is_blocking": model.response_streaming_supported.unwrap_or(false)
                 }])
             })
         })

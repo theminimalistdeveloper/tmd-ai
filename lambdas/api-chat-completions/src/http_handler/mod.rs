@@ -1,6 +1,4 @@
-use aws_lambda_events::event::apigw::{
-    ApiGatewayProxyRequest,
-};
+use aws_lambda_events::event::apigw::ApiGatewayProxyRequest;
 use aws_sdk_bedrockruntime::types::{
     ContentBlock,
     ConversationRole,
@@ -25,6 +23,7 @@ struct OpenAiMessage {
     role: String,
     content: String,
 }
+
 const OBJ_TYPE: &str = "chat.completion.chunk";
 const CHAT_ID: &str = "chatcmpl-bedrock";
 

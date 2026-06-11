@@ -142,7 +142,7 @@ export class TmdAIStack extends cdk.Stack {
       handler: authFunction,
       identitySource: apigw.IdentitySource.header('Authorization'),
       resultsCacheTtl: cdk.Duration.seconds(0),
-      validationRegex: undefined,
+      validationRegex: '^Bearer [a-zA-Z0-9].+$',
     });
   }
 }
